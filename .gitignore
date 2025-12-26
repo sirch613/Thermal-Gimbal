@@ -1,0 +1,15 @@
+# Logs and data
+launch_log.txt
+launch_direct.txt
+.nuc_trigger
+
+# Python
+__pycache__/
+*.pyc
+
+# Local Models (if large)
+yolov8n.pt
+# training/best_drone.pt # Include this if you want to share the weights
+
+# OS
+.DS_Store
