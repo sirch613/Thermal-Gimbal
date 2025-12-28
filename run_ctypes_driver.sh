@@ -1,4 +1,22 @@
 #!/bin/bash
+LOCKFILE="/tmp/t2pro_launcher.lock"
+
+# --- Prevent Duplicate Launchers ---
+if [ -f "$LOCKFILE" ]; then
+    OLDPID=$(cat "$LOCKFILE")
+    if ps -p "$OLDPID" > /dev/null 2>&1; then
+        echo "[ERROR] Another launcher is already running (PID $OLDPID). Exiting."
+        exit 1
+    else
+        echo "[WARN] Stale lock file found. Cleaning up."
+        rm -f "$LOCKFILE"
+    fi
+fi
+
+# Write our PID to lockfile
+echo $$ > "$LOCKFILE"
+trap "rm -f $LOCKFILE" EXIT
+
 echo "Running T2Pro Ctypes Driver (Requires Sudo)..."
 while true; do
     echo "[LAUNCHER] Starting Driver..."
