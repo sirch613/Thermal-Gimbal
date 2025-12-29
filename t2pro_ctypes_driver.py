@@ -852,11 +852,20 @@ def main():
                                     cv2.line(upscale, (512, 384-20), (512, 384+20), (200, 200, 200), 1)
 
                                     if btn_auto.active:
-                                        # Draw visual indicator for AUTO
-                                        mode_text = f"AUTO TRACKING ({'AI' if btn_ai.active else 'HOT SPOT'})"
-                                        cv2.putText(upscale, mode_text, (VIDEO_WIDTH//2 - 150, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 69, 255), 2)
+                                        # Determine track state for HUD
+                                        track_mode = "SEARCHING"
+                                        if btn_ai.active and ai_target:
+                                            track_mode = "AI LOCK"
+                                        elif hot_spot_blob:
+                                            track_mode = "HS FALLBACK" if btn_ai.active else "HOT SPOT"
+                                        else:
+                                            track_mode = "MAX PIXEL"
+                                            
+                                        # HUD Text
+                                        mode_text = f"AUTO TRACKING [{track_mode}]"
+                                        cv2.putText(upscale, mode_text, (VIDEO_WIDTH//2 - 200, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 69, 255), 2)
                                         
-                                        # Determine target: AI detection or Hot Spot Blob Centroid
+                                        # Determine target: AI Drone > Hot Spot Blob > Max Pixel
                                         raw_tgt_x, raw_tgt_y = 128, 96 # Default center
                                         if btn_ai.active and ai_target:
                                             raw_tgt_x, raw_tgt_y = ai_target

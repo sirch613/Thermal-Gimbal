@@ -7,7 +7,7 @@ warnings.filterwarnings("ignore")
 
 
 class ThermalAI:
-    def __init__(self, model_path='training/best_drone.pt', confidence=0.4):
+    def __init__(self, model_path='training/best_drone_real.pt', confidence=0.4):
         # Hardware Acceleration Check
         self.device = 'mps' if torch.backends.mps.is_available() else 'cpu'
         print(f"[AI] Hardware Acceleration: {self.device.upper()}")
@@ -28,12 +28,12 @@ class ThermalAI:
     def set_mode(self, mode):
         self.mode = mode.upper()
         if self.mode == "DRONE":
-            print("[AI] Switching to DRONE model...")
+            print("[AI] Switching to DRONE model (Real IR)...")
             try:
-                self.model = YOLO('training/best_drone.pt')
+                self.model = YOLO('training/best_drone_real.pt')
                 self.model.to(self.device)
             except:
-                print("[AI] best_drone.pt not found!")
+                print("[AI] best_drone_real.pt not found!")
         elif self.mode == "PERSON":
             print("[AI] Switching to PERSON model...")
             self.model = YOLO('yolov8n.pt')

@@ -1,6 +1,9 @@
 # Logs and data
 launch_log.txt
 launch_direct.txt
+*.txt
+*.log
+*.working_backup
 .nuc_trigger
 
 # Python
